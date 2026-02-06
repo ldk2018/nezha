@@ -6,9 +6,9 @@ buildscript {
     }
     dependencies {
         // 声明构建项目所需的Android Gradle插件版本
-        classpath 'com.android.tools.build:gradle:8.2.1'
+        classpath 'com.android.tools.build:gradle:7.4.2'
         // 如果你的项目使用Kotlin，请确保这一行存在
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21'
     }
 }
 
@@ -24,3 +24,4 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
