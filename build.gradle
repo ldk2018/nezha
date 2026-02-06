@@ -4,19 +4,17 @@ buildscript {
         google()       // 必须！Android Gradle插件在此仓库
         mavenCentral() // 必须！其他通用库在此仓库
     }
-dependencies {
-    // AndroidX 核心库
-    implementation 'androidx.core:core-ktx:1.12.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
-    // 网络请求
-    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
-    // JSON解析
-    implementation 'com.google.code.gson:gson:2.10.1'
-    // Kotlin协程 (用于异步操作)
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-    // Lifecycle (如果需要 ViewModel 等)
-    // implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // 将版本从 8.2.1 降级到 7.4.2
+        classpath 'com.android.tools.build:gradle:7.4.2'
+        // 如果使用Kotlin，也将版本相应降级
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21'
+    }
 }
 }
 
@@ -32,5 +30,6 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
 
 
