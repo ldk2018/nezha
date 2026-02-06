@@ -4,12 +4,20 @@ buildscript {
         google()       // 必须！Android Gradle插件在此仓库
         mavenCentral() // 必须！其他通用库在此仓库
     }
-    dependencies {
-        // 声明构建项目所需的Android Gradle插件版本
-        classpath 'com.android.tools.build:gradle:7.4.2'
-        // 如果你的项目使用Kotlin，请确保这一行存在
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21'
-    }
+dependencies {
+    // AndroidX 核心库
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    // 网络请求
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    // JSON解析
+    implementation 'com.google.code.gson:gson:2.10.1'
+    // Kotlin协程 (用于异步操作)
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+    // Lifecycle (如果需要 ViewModel 等)
+    // implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
+}
 }
 
 // 为所有子模块（如你的 `app` 模块）配置依赖仓库
@@ -24,4 +32,5 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
 
