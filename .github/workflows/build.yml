@@ -1,6 +1,6 @@
 name: Build Nezha APK
 on:
-  workflow_dispatch: # 允许手动触发
+  workflow_dispatch:
 
 jobs:
   build:
@@ -15,18 +15,16 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # 核心更新：使用最新官方Gradle设置Action，并移除问题缓存
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          # 此Action内置了更可靠的缓存机制，无需额外配置
-          cache-disabled: false # 保持启用，但使用其内部新逻辑
+      # 关键修改：直接运行Gradle，不进行任何缓存设置
+      - name: Build with Gradle
+        run: |
+          # 赋予gradlew执行权限（如果你的项目有它）
+          chmod +x ./gradlew 2>/dev/null || echo "No gradlew, using system Gradle"
+          # 执行编译
+          ./gradlew assembleDebug --no-daemon
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
-
-      - name: Upload APK artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: nezha-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: nezha-apk
+          path: app/build/outputs/apk/debug/*.apk
