@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         btnStart.setOnClickListener { startService() }
         btnStop.setOnClickListener { stopService() }
         
-        // ³¤°´ÏÔÊ¾/Òş²ØÃÜÔ¿
+        // é•¿æŒ‰æ˜¾ç¤º/éšè—å¯†é’¥
         etSecretKey.setOnLongClickListener {
             if (etSecretKey.inputType == 129) {
                 etSecretKey.inputType = 1
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         val secretKey = etSecretKey.text.toString().trim()
         
         if (serverUrl.isEmpty() || agentId.isEmpty() || secretKey.isEmpty()) {
-            Toast.makeText(this, "ÇëÌîĞ´ËùÓĞÅäÖÃÏî", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "è¯·å¡«å†™æ‰€æœ‰é…ç½®é¡¹", Toast.LENGTH_SHORT).show()
             return
         }
         
@@ -82,13 +82,13 @@ class MainActivity : AppCompatActivity() {
         )
         
         if (configManager.saveConfig(config)) {
-            Toast.makeText(this, "ÅäÖÃ±£´æ³É¹¦", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "é…ç½®ä¿å­˜æˆåŠŸ", Toast.LENGTH_SHORT).show()
         }
     }
     
     private fun startService() {
         if (!configManager.hasConfig()) {
-            Toast.makeText(this, "ÇëÏÈ±£´æÅäÖÃ", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "è¯·å…ˆä¿å­˜é…ç½®", Toast.LENGTH_SHORT).show()
             return
         }
         
@@ -99,15 +99,15 @@ class MainActivity : AppCompatActivity() {
             startService(intent)
         }
         
-        tvStatus.text = "·şÎñ×´Ì¬: ÔËĞĞÖĞ"
-        Toast.makeText(this, "¼à¿Ø·şÎñÒÑÆô¶¯", Toast.LENGTH_SHORT).show()
+        tvStatus.text = "æœåŠ¡çŠ¶æ€: è¿è¡Œä¸­"
+        Toast.makeText(this, "ç›‘æ§æœåŠ¡å·²å¯åŠ¨", Toast.LENGTH_SHORT).show()
     }
     
     private fun stopService() {
         val intent = Intent(this, MonitoringService::class.java)
         stopService(intent)
         
-        tvStatus.text = "·şÎñ×´Ì¬: ÒÑÍ£Ö¹"
-        Toast.makeText(this, "¼à¿Ø·şÎñÒÑÍ£Ö¹", Toast.LENGTH_SHORT).show()
+        tvStatus.text = "æœåŠ¡çŠ¶æ€: å·²åœæ­¢"
+        Toast.makeText(this, "ç›‘æ§æœåŠ¡å·²åœæ­¢", Toast.LENGTH_SHORT).show()
     }
 }
