@@ -1,30 +1,31 @@
-name: Build Nezha APK
-on:
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      # 关键修改：直接运行Gradle，不进行任何缓存设置
-      - name: Build with Gradle
-        # 如果你的源码就在仓库根目录，则无需指定working-directory。
-        # 如果你的项目结构是 `nezha/app/`，则可能需要将工作目录切换到 `nezha/`。
-        working-directory: . # 保持当前目录（仓库根目录），这是最常见的情况。
+      - name: 诊断与构建
         run: |
-          gradle :app:assembleDebug --no-daemon # 关键：使用完整任务路径
+          echo "1. 检查项目结构..."
+          find . -name "*.gradle*" -o -name "*.kts" | sort
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: nezha-apk
-          path: app/build/outputs/apk/debug/*.apk
+          echo "2. 检查根目录build.gradle内容..."
+          cat build.gradle
+
+          echo "3. 临时修复：确保根目录build.gradle纯净..."
+          # 以下命令会创建一个绝对干净、兼容性最好的根项目配置
+          cat > build.gradle << 'EOF'
+          buildscript {
+              repositories { google(); mavenCentral() }
+              dependencies {
+                  classpath 'com.android.tools.build:gradle:7.4.2'
+                  classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21'
+              }
+          }
+          allprojects {
+              repositories { google(); mavenCentral() }
+          }
+          task clean(type: Delete) { delete rootProject.buildDir }
+          EOF
+
+          echo "4. 检查修复后的内容..."
+          cat build.gradle
+
+          echo "5. 开始关键构建（启用详细日志）..."
+          cd app
+          # 使用 clean 任务清理可能的缓存，再重新构建
+          gradle clean assembleDebug --no-daemon --stacktrace 2>&1 | tail -n 200
