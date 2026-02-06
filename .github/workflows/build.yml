@@ -17,9 +17,11 @@ jobs:
 
       # 关键修改：直接运行Gradle，不进行任何缓存设置
       - name: Build with Gradle
+        # 如果你的源码就在仓库根目录，则无需指定working-directory。
+        # 如果你的项目结构是 `nezha/app/`，则可能需要将工作目录切换到 `nezha/`。
+        working-directory: . # 保持当前目录（仓库根目录），这是最常见的情况。
         run: |
-          # 使用系统全局的gradle命令
-          gradle assembleDebug --no-daemon
+          gradle :app:assembleDebug --no-daemon # 关键：使用完整任务路径
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
