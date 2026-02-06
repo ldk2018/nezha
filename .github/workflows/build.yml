@@ -1,5 +1,5 @@
 name: Build Nezha APK
-on: 
+on:
   workflow_dispatch: # 允许手动触发
 
 jobs:
@@ -10,13 +10,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Gradle caching
-        uses: gradle/gradle-build-action@v3
+      # 核心更新：使用最新官方Gradle设置Action，并移除问题缓存
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          # 此Action内置了更可靠的缓存机制，无需额外配置
+          cache-disabled: false # 保持启用，但使用其内部新逻辑
 
       - name: Build Debug APK
         run: ./gradlew assembleDebug
